@@ -2,7 +2,7 @@
 A set of utility functions are provided, especially developed for Google Cloud Functions (might work on other serverless platforms too). The functions planned are mostly to be decorators.
 
 ## CORS
-Adds CORS headers to your function. Provided that Google Cloud Funtions use Flask for underlying logic, the return types must be compatible with Flask's.
+Adds CORS headers to your function. Responds to `OPTIONS` request by sending CORS headers and without triggering the cloud function. Provided that Google Cloud Funtions use Flask for underlying logic, the return types must be compatible with Flask's.
 
 For example:
 ```python
@@ -12,7 +12,7 @@ def run(request):
 ```
 
 sets the following headers by default:
-```python
+```
 Access-Control-Allow-Origin: '*'
 Access-Control-Allow-Methods: 'POST'
 Access-Control-Allow-Headers: ''
@@ -30,7 +30,7 @@ def run(request):
 ```
 
 sets the following headers:
-```python
+```
 Access-Control-Allow-Origin: 'sample_origin'
 Access-Control-Allow-Methods: 'GET'
 Access-Control-Allow-Headers: 'Content-Type'
