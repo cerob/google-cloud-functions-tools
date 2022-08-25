@@ -1,6 +1,6 @@
 import unittest
 
-from src import cors
+from src.google_cloud_functions_tools import cors
 
 
 class TestCors(unittest.TestCase):
