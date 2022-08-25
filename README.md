@@ -6,6 +6,8 @@ Adds CORS headers to your function. Responds to `OPTIONS` request by sending COR
 
 For example:
 ```python
+from google_cloud_functions_tools import cors
+
 @cors
 def run(request):
     return 'Response text'
@@ -21,6 +23,8 @@ Access-Control-Max-Age: 3600
 
 However, these default values might change at any time, therefore it is better to specify headers explicitly:
 ```python
+from google_cloud_functions_tools import cors
+
 @cors(origin='sample_origin',
       methods='GET',
       headers='Content-Type',
