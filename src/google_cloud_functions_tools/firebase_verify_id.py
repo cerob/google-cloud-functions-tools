@@ -7,9 +7,13 @@ from firebase_admin import auth
 def verify_firebase_id_token(request_handler=None,
                              *,
                              app_name='[DEFAULT]',
-                             log=False):
+                             log=False,
+                             limit_email_domain_to=None):
     if request_handler is None:
-        return partial(verify_firebase_id_token, app_name=app_name, log=log)
+        return partial(verify_firebase_id_token,
+                       app_name=app_name,
+                       log=log,
+                       limit_email_domain_to=limit_email_domain_to)
 
     @wraps(request_handler)
     def wrapper(request, *args, **kwargs):
@@ -38,6 +42,14 @@ def verify_firebase_id_token(request_handler=None,
 
         if 'uid' not in token_info:
             return 'Undefined user', 401  # Unauthorized
+
+        if limit_email_domain_to is not None:
+            if 'email' not in token_info:
+                return 'Email domain authentication is active but the token did not provide email information.', 401  # Unauthorized
+
+            email = token_info.get('email', '')
+            if not token_info.get('email', '').endswith(limit_email_domain_to):
+                return f'Only users with valid {limit_email_domain_to} email addresses can perform this operation.', 401  # Unauthorized
 
         if log:
             # For cloud functions, we simply use print.

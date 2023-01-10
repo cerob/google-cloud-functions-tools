@@ -1,6 +1,12 @@
 # Google Cloud Functions Tools
 A set of utility functions are provided, especially developed for Google Cloud Functions (might work on other serverless platforms too). The functions planned are mostly to be decorators.
 
+To install via `pip`, run:
+
+```shell
+pip install google-cloud-functions-tools
+```
+
 ## CORS
 Adds CORS headers to your function. Responds to `OPTIONS` request by sending CORS headers and without triggering the cloud function. Provided that Google Cloud Funtions use Flask for underlying logic, the return types must be compatible with Flask's.
 
@@ -59,6 +65,7 @@ def run(request, token_info):
     return token_info
 ```
 
+### `app_name`
 `app_name` argument passes app name to `firebase_admin` library. The default value is `[DEFAULT]`.
 
 ```python
@@ -69,6 +76,7 @@ def run(request, token_info):
     return token_info
 ```
 
+### `log`
 Setting `log` argument to `True` logs user information to cloud function logs.
 
 ```python
@@ -83,6 +91,30 @@ logs:
 
 ```
 Authenticated for name="Someone", email="someone@example.com"
+```
+
+### `limit_email_domain_to`
+Supply `limit_email_domain_to` argument to limit cloud function operation to users having a specifig email address domain only. Note that this is only a simple string check without any RegEx support.
+
+
+```python
+from google_cloud_functions_tools import verify_firebase_id_token
+
+@verify_firebase_id_token(limit_email_domain_to='example.com')
+def run(request, token_info):
+    return token_info
+```
+
+If the users token does not provide an email address, HTTP 401 Unauthorized is returned with the following error message:
+
+```
+Email domain authentication is active but the token did not provide email information.
+```
+
+Users having different email addresses other than the allowed one get HTTP 401 Unauthorized with the following error message:
+
+```
+Only users with valid example.com email addresses can perform this operation.
 ```
 
 ## Contibuting
