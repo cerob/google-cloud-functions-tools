@@ -1,6 +1,6 @@
 [project]
 name = "google_cloud_functions_tools"
-version = "0.2"
+version = "0.2.1"
 authors = [{ name="Abdurrahman Dilmac" }]
 description = "A set of utility tools (planned mostly to be decorators) for Google Cloud Functions"
 readme = "README.md"
